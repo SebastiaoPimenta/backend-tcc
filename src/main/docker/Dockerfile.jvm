@@ -1,0 +1,36 @@
+####
+# Este Dockerfile é usado para construir uma imagem de container que roda a aplicação Quarkus em modo JVM
+#
+# Antes de construir a imagem de container, execute:
+#
+# ./mvnw clean package
+#
+# Em seguida, construa a imagem com:
+#
+# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/route-optimization-jvm .
+#
+# Em seguida, execute o container usando:
+#
+# docker run -i --rm -p 8080:8080 -e GOOGLE_MAPS_API_KEY=sua_chave quarkus/route-optimization-jvm
+#
+####
+FROM registry.access.redhat.com/ubi8/openjdk-17:1.18
+
+ENV LANGUAGE='en_US:en'
+
+# Configurações opcionais para JVM
+ENV JAVA_OPTS_APPEND="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+
+# Configuração de memória (ajuste conforme necessário)
+ENV JAVA_OPTS="-Xmx512m -Xms256m"
+
+COPY target/quarkus-app/lib/ /deployments/lib/
+COPY target/quarkus-app/*.jar /deployments/
+COPY target/quarkus-app/app/ /deployments/app/
+COPY target/quarkus-app/quarkus/ /deployments/quarkus/
+
+EXPOSE 8080
+USER 185
+ENV AB_JOLOKIA_OFF=""
+ENV JAVA_OPTS="${JAVA_OPTS} -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"

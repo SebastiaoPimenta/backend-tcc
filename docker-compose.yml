@@ -1,0 +1,44 @@
+# Arquivo de configuração Docker Compose para desenvolvimento e teste
+
+version: '3.8'
+
+services:
+  route-optimization:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8080:8080"
+    environment:
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY:-YOUR_GOOGLE_MAPS_API_KEY}
+      - QUARKUS_LOG_LEVEL=INFO
+    volumes:
+      - ./logs:/deployments/logs
+    networks:
+      - route-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/route-optimization/info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Exemplo de um possível frontend (comentado)
+  # frontend:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "3000:80"
+  #   volumes:
+  #     - ./frontend/dist:/usr/share/nginx/html
+  #   depends_on:
+  #     - route-optimization
+  #   networks:
+  #     - route-network
+
+networks:
+  route-network:
+    driver: bridge
+
+volumes:
+  logs:

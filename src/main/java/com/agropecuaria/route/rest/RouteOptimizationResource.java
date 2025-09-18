@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 /**
@@ -16,6 +18,7 @@ import org.jboss.logging.Logger;
 @Path("/api/route-optimization")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Tag(name = "Route Optimization", description = "API para otimização de rotas de entrega agropecuária usando algoritmos genéticos")
 public class RouteOptimizationResource {
     
     private static final Logger LOG = Logger.getLogger(RouteOptimizationResource.class);
@@ -31,6 +34,10 @@ public class RouteOptimizationResource {
      */
     @POST
     @Path("/optimize")
+    @Operation(
+        summary = "Otimizar rota de entrega",
+        description = "Utiliza algoritmo genético para encontrar a melhor sequência de entregas considerando tempo de deterioração dos produtos"
+    )
     public Response optimizeRoute(@Valid RouteOptimizationRequest request) {
         LOG.info("Recebida requisição de otimização de rota com " + 
                 request.getDeliveries().size() + " entregas");
@@ -78,6 +85,10 @@ public class RouteOptimizationResource {
      */
     @POST
     @Path("/check-feasibility")
+    @Operation(
+        summary = "Verificar viabilidade da rota",
+        description = "Verifica se é possível entregar todos os produtos dentro dos prazos de deterioração, sem otimizar a sequência"
+    )
     public Response checkFeasibility(@Valid RouteOptimizationRequest request) {
         LOG.info("Verificando viabilidade de " + request.getDeliveries().size() + " entregas");
         
@@ -106,6 +117,10 @@ public class RouteOptimizationResource {
      */
     @GET
     @Path("/info")
+    @Operation(
+        summary = "Informações do serviço",
+        description = "Retorna informações sobre o serviço de otimização de rotas"
+    )
     public Response getServiceInfo() {
         ServiceInfo info = new ServiceInfo();
         info.setServiceName("Route Optimization Service");

@@ -1,0 +1,48 @@
+# Configuração da aplicação
+quarkus:
+  application:
+    name: "Route Optimization Service"
+    version: "1.0.0"
+    
+  # Configuração da API
+  smallrye-openapi:
+    info-title: "API de Otimização de Rotas Agropecuárias"
+    info-version: "1.0.0"
+    info-description: "API para otimização de rotas de entrega de produtos agropecuários usando algoritmos genéticos"
+    info-contact-name: "Agropecuária TCC"
+    info-contact-email: "contato@agropecuaria.com"
+    info-license-name: "MIT"
+    
+  # Configuração do Swagger UI
+  swagger-ui:
+    always-include: true
+    path: "/q/swagger-ui"
+    
+  # Configuração de logging
+  log:
+    level:
+      com.agropecuaria: DEBUG
+      
+  # Configuração do servidor
+  http:
+    port: 8080
+    host: 0.0.0.0
+    
+  # Configuração do Google Maps
+  rest-client:
+    google-maps:
+      url: "https://maps.googleapis.com"
+      timeout: 30s
+
+# Configuração customizada
+google:
+  maps:
+    api-key: ${GOOGLE_MAPS_API_KEY:AIzaSyCDH0mZmx5Q0AKArGle-AbyTZWFcdgJ73k}
+    
+# Configuração do algoritmo genético
+genetic:
+  algorithm:
+    population-size: 250
+    generations: 500
+    mutation-probability: 0.01
+    crossover-probability: 0.6

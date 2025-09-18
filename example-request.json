@@ -1,0 +1,75 @@
+{
+  "startLocation": {
+    "latitude": -15.7942,
+    "longitude": -47.8822,
+    "address": "Setor Comercial Sul, Brasília, DF"
+  },
+  "deliveries": [
+    {
+      "id": "entrega-001",
+      "location": {
+        "latitude": -15.7801,
+        "longitude": -47.9292,
+        "address": "Taguatinga Norte, DF"
+      },
+      "products": [
+        {
+          "name": "Leite fresco",
+          "type": "DAIRY",
+          "quantity": 50,
+          "deteriorationTimeMinutes": 720
+        },
+        {
+          "name": "Queijo minas",
+          "type": "DAIRY", 
+          "quantity": 20,
+          "deteriorationTimeMinutes": 720
+        }
+      ]
+    },
+    {
+      "id": "entrega-002",
+      "location": {
+        "latitude": -15.8331,
+        "longitude": -48.0368,
+        "address": "Ceilândia Norte, DF"
+      },
+      "products": [
+        {
+          "name": "Alface",
+          "type": "VEGETABLE",
+          "quantity": 30,
+          "deteriorationTimeMinutes": 1440
+        },
+        {
+          "name": "Tomate",
+          "type": "VEGETABLE",
+          "quantity": 25,
+          "deteriorationTimeMinutes": 1440
+        }
+      ]
+    },
+    {
+      "id": "entrega-003",
+      "location": {
+        "latitude": -15.7217,
+        "longitude": -47.8825,
+        "address": "Asa Norte, Brasília, DF"
+      },
+      "products": [
+        {
+          "name": "Banana",
+          "type": "FRUIT",
+          "quantity": 40,
+          "deteriorationTimeMinutes": 1440
+        },
+        {
+          "name": "Maçã",
+          "type": "FRUIT",
+          "quantity": 35,
+          "deteriorationTimeMinutes": 1440
+        }
+      ]
+    }
+  ]
+}

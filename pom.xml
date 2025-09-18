@@ -59,6 +59,12 @@
       <artifactId>quarkus-config-yaml</artifactId>
     </dependency>
     
+    <!-- OpenAPI/Swagger -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-openapi</artifactId>
+    </dependency>
+    
     <!-- Jenetics - Algoritmos Genéticos -->
     <dependency>
       <groupId>io.jenetics</groupId>

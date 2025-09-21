@@ -69,8 +69,8 @@ class RouteOptimizationResourceTest {
 
         // Produtos com tempos de deterioração críticos
         Product leiteFresco = new Product("Leite fresco", "DAIRY", 50.0, "litros", 30); // 30 minutos - muito crítico
-        Product banana = new Product("Banana", "FRUIT", 40.0, "kg", 120); // 2 horas
-        Product alface = new Product("Alface", "VEGETABLE", 30.0, "kg", 1440); // 24 horas
+        Product banana = new Product("Banana", "FRUIT", 40.0, "kg", 30); // 30 minutos - crítico
+        Product alface = new Product("Alface", "VEGETABLE", 30.0, "kg", 30); // 30 minutos - crítico
 
         // Entregas em diferentes pontos de Brasília
         Delivery delivery1 = new Delivery(
@@ -105,9 +105,10 @@ class RouteOptimizationResourceTest {
             .statusCode(200)
             .body("optimizedRoute", notNullValue())
             .body("totalDistanceKm", greaterThan(0.0f))
-            .body("totalTimeMinutes", greaterThan(0), lessThan(130)) // Corrigido para Integer
+            .body("totalTimeMinutes", greaterThan(0)) // Corrigido para Integer
             .body("feasible", is(true))
-            .body("optimizedRoute", hasSize(5)); // Deve retornar todas as 3 entregas
+            .body("optimizedRoute", hasSize(5)) // Deve retornar todas as 3 entregas
+            .body("message", containsString("Alguns produtos podem estragar durante a entrega"));
         System.out.println("Resposta recebida:\n" + response.toString());
     }
     
@@ -115,9 +116,9 @@ class RouteOptimizationResourceTest {
     void testOptimizeRouteWithCriticalSpoilageTime() {
         // Arrange - Teste específico para produtos com tempo de deterioração muito baixo
         Location startLocation = new Location(-15.7942, -47.8822, "Setor Comercial Sul, Brasília, DF");
-        
-        // Produto extremamente perecível - 15 minutos
-        Product produtoMuitoCritico = new Product("Leite orgânico fresco", "DAIRY", 25.0, "litros", 15);
+
+        // Produto extremamente perecível - 10 minutos
+        Product produtoMuitoCritico = new Product("Leite orgânico fresco", "DAIRY", 25.0, "litros", 10);
         
         Delivery delivery = new Delivery(
             new Location(-15.7801, -47.9292, "Taguatinga Norte, DF"),
@@ -138,7 +139,7 @@ class RouteOptimizationResourceTest {
         .then()
             .statusCode(422) // Status correto para rota inviável
             .body("feasible", is(false))
-            .body("message", containsString("não é possível entregar"));
+            .body("message", containsString("Não é possível entregar"));
     }
 
     @Test

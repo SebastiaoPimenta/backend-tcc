@@ -143,7 +143,7 @@ public class GeneticRouteOptimizer {
     }
     
     /**
-     * Função de fitness (quanto menor, melhor)
+     * Função de fitness (Jenetics maximiza, então retornamos o negativo para minimizar tempo + penalidade)
      */
     private double fitness(Genotype<EnumGene<Integer>> genotype, 
                           RouteOptimizationRequest request, 
@@ -169,7 +169,8 @@ public class GeneticRouteOptimizer {
         // Penaliza rotas que violam restrições de tempo
         double penalty = calculateTimePenalty(route, request, timeMatrix);
         
-        return totalTime + penalty;
+        // Retorna o negativo porque Jenetics maximiza (queremos minimizar tempo + penalidade)
+        return -(totalTime + penalty);
     }
     
     /**

@@ -26,7 +26,7 @@ public class RouteOptimizationRequest {
     private Double vehicleSpeedKmH = 60.0; // Velocidade média do veículo em km/h
     
     @JsonProperty("loadingTimeMinutes")
-    private Integer loadingTimeMinutes = 15; // Tempo de carregamento/descarregamento por entrega
+    private Integer loadingTimeMinutes = 0; // Tempo de carregamento/descarregamento por entrega
     
     @JsonProperty("useGoogleMaps")
     private Boolean useGoogleMaps = true; // Se deve usar Google Maps API para distâncias reais

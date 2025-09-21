@@ -24,6 +24,9 @@ Esta é uma API REST para otimização de rotas de entrega de produtos agropecu�
 - **POST** `/api/route-optimization/optimize`
 - Utiliza algoritmo genético para encontrar a melhor sequência de entregas
 - Considera tempo de deterioração dos produtos
+- **Nova funcionalidade**: Verificação final de produtos estragados após otimização
+  - Se produtos estragarem, retorna warning na resposta mas mantém a solução otimizada
+  - Inclui lista detalhada dos produtos que podem estragar
 
 ### 2. Verificar Viabilidade
 - **POST** `/api/route-optimization/check-feasibility`

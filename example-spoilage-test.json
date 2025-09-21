@@ -1,0 +1,60 @@
+{
+  "startLocation": {
+    "latitude": -15.7942,
+    "longitude": -47.8822,
+    "address": "Setor Comercial Sul, Brasília, DF"
+  },
+  "deliveries": [
+    {
+      "location": {
+        "latitude": -15.7801,
+        "longitude": -47.9292,
+        "address": "Taguatinga Norte, DF"
+      },
+      "products": [
+        {
+          "name": "Leite fresco",
+          "type": "DAIRY",
+          "quantity": 50,
+          "unit": "litros",
+          "maxDeliveryTimeMinutes": 30,
+          "description": "Leite que estraga muito rápido para testar a validação"
+        }
+      ]
+    },
+    {
+      "location": {
+        "latitude": -15.8331,
+        "longitude": -48.0368,
+        "address": "Ceilândia Norte, DF"
+      },
+      "products": [
+        {
+          "name": "Banana",
+          "type": "FRUIT",
+          "quantity": 40,
+          "unit": "kg",
+          "maxDeliveryTimeMinutes": 120,
+          "description": "Banana com tempo de deterioração curto"
+        }
+      ]
+    },
+    {
+      "location": {
+        "latitude": -15.7217,
+        "longitude": -47.8825,
+        "address": "Asa Norte, Brasília, DF"
+      },
+      "products": [
+        {
+          "name": "Alface",
+          "type": "VEGETABLE",
+          "quantity": 30,
+          "unit": "kg",
+          "maxDeliveryTimeMinutes": 1440,
+          "description": "Alface com tempo normal de deterioração"
+        }
+      ]
+    }
+  ]
+}

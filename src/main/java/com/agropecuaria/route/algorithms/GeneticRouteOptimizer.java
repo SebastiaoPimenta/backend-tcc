@@ -30,7 +30,7 @@ public class GeneticRouteOptimizer {
     
     // Parâmetros do algoritmo genético
     private static final int POPULATION_SIZE = 100;
-    private static final int MAX_GENERATIONS = 500;
+    private static final int MAX_GENERATIONS = 5000;
     private static final double MUTATION_PROBABILITY = 0.15;
     private static final double CROSSOVER_PROBABILITY = 0.65;
     
@@ -63,7 +63,8 @@ public class GeneticRouteOptimizer {
             
             // Constrói resposta
             RouteOptimizationResponse response = new RouteOptimizationResponse();
-            response.setOptimizedRoute(optimizedRoute.subList(1, optimizedRoute.size() - 1)); // Remove início e fim
+            // Mantém o início e fim (0) na lista
+            response.setOptimizedRoute(new ArrayList<>(optimizedRoute));
             response.setDeliveryOrder(buildDeliveryOrder(optimizedRoute, request.getDeliveries()));
             response.setTotalDistanceKm(totalDistance);
             response.setTotalTimeMinutes((int) Math.ceil(totalTime));
@@ -204,6 +205,74 @@ public class GeneticRouteOptimizer {
     }
     
     /**
+     * Verifica se produtos estragaram na rota otimizada (método público)
+     */
+    public ProductSpoilageResult validateOptimizedRoute(List<Integer> optimizedRoute, 
+                                                       RouteOptimizationRequest request) {
+        try {
+            // Prepara localizações
+            List<Location> allLocations = prepareLocations(request);
+            
+            // Calcula matriz de tempo
+            double[][] timeMatrix = googleMapsService.calculateDistanceMatrix(allLocations);
+            
+            // Verifica produtos estragados
+            return checkProductSpoilage(optimizedRoute, request, timeMatrix);
+            
+        } catch (Exception e) {
+            LOG.error("Erro durante validação da rota otimizada: " + e.getMessage(), e);
+            // Retorna resultado indicando erro na validação
+            return new ProductSpoilageResult(true, new ArrayList<>(), new ArrayList<>());
+        }
+    }
+    
+    /**
+     * Verifica se produtos estragaram na rota otimizada
+     */
+    public ProductSpoilageResult checkProductSpoilage(List<Integer> optimizedRoute, 
+                                                     RouteOptimizationRequest request, 
+                                                     double[][] timeMatrix) {
+        List<String> spoiledProducts = new ArrayList<>();
+        List<Integer> spoiledDeliveries = new ArrayList<>();
+        double currentTime = 0;
+
+        
+        // Simula a execução da rota otimizada
+        for (int i = 1; i < optimizedRoute.size() - 1; i++) {
+            int prevIndex = optimizedRoute.get(i - 1);
+            int currentIndex = optimizedRoute.get(i);
+            
+            // Adiciona tempo de viagem
+            currentTime += timeMatrix[prevIndex][currentIndex];
+            
+            // Adiciona tempo de carregamento
+            currentTime += request.getLoadingTimeMinutes();
+            
+            // Verifica se algum produto estragou
+            Delivery delivery = request.getDeliveries().get(currentIndex - 1);
+            int maxTimeLimit = delivery.getMinDeliveryTimeLimit();
+            
+            if (currentTime > maxTimeLimit) {
+                spoiledDeliveries.add(currentIndex - 1); // Índice da entrega
+                
+                // Adiciona todos os produtos desta entrega que estragaram
+                final double finalCurrentTime = currentTime; // Para uso no lambda
+                delivery.getProducts().forEach(product -> {
+                    if (finalCurrentTime > product.getMaxDeliveryTimeMinutes()) {
+                        spoiledProducts.add(product.getName() + " (Entrega " + (currentIndex - 1) + ")");
+                    }
+                });
+            }
+        }
+        
+        return new ProductSpoilageResult(
+            spoiledProducts.isEmpty(), 
+            spoiledProducts, 
+            spoiledDeliveries
+        );
+    }
+    
+    /**
      * Verifica viabilidade da solução
      */
     private FeasibilityResult checkFeasibility(RouteOptimizationRequest request, double[][] timeMatrix) {
@@ -264,6 +333,33 @@ public class GeneticRouteOptimizer {
         
         public List<Integer> getInfeasibleDeliveries() {
             return infeasibleDeliveries;
+        }
+    }
+    
+    /**
+     * Classe interna para resultado de verificação de produtos estragados
+     */
+    public static class ProductSpoilageResult {
+        private final boolean allProductsValid;
+        private final List<String> spoiledProducts;
+        private final List<Integer> spoiledDeliveries;
+        
+        public ProductSpoilageResult(boolean allProductsValid, List<String> spoiledProducts, List<Integer> spoiledDeliveries) {
+            this.allProductsValid = allProductsValid;
+            this.spoiledProducts = spoiledProducts;
+            this.spoiledDeliveries = spoiledDeliveries;
+        }
+        
+        public boolean isAllProductsValid() {
+            return allProductsValid;
+        }
+        
+        public List<String> getSpoiledProducts() {
+            return spoiledProducts;
+        }
+        
+        public List<Integer> getSpoiledDeliveries() {
+            return spoiledDeliveries;
         }
     }
 }

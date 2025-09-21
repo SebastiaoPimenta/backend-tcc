@@ -1,0 +1,119 @@
+Algoritmos Genéticos Aplicados à Otimização de Rotas no Agronegócio
+
+
+Sebastião de Lima Pimenta; Ariel da Silva Dias
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Algoritmos Genéticos Aplicados à Otimização de Rotas no Agronegócio
+
+Resumo
+
+A logística de transporte é um ponto estratégico no agronegócio, principalmente na distribuição de produtos perecíveis. A definição de rotas ótimas torna-se um problema complexo, exigindo métodos eficientes para minimizar custos e atender às demandas do mercado. Neste trabalho propõe-se o desenvolvimento de uma solução web baseada em algoritmo genético para a otimização de rotas no agronegócio. A metodologia envolve a integração de um back-end em Quarkus, que obtém a matriz de distâncias, como base para a futura aplicação do algoritmo de roteirização. Os resultados preliminares concentram-se na avaliação da API e na estruturação do back-end, estabelecendo uma base para o desenvolvimento das próximas fases.
+
+Palavras-chave: Logística; API; Perecíveis; Quarkus.
+
+
+Introdução
+
+O agronegócio engloba todas as atividades econômicas relacionadas à produção, processamento e comercialização de produtos agropecuários, de acordo com a Confederação da Agricultura e Pecuária do Brasil (CNA), em 2022, a sua contribuição para o PIB brasileiro foi de 25%, mostrando o impacto do setor na economia nacional. No entanto, apesar de sua grande importância, o agronegócio ainda deixa a desejar em alguns aspectos, um deles sendo a logística nas rotas de distribuição dos produtos. Segundo Caixeta Filho (2021), vários países subdesenvolvidos e em desenvolvimento produzem, em teoria, mais comida do que o necessário para alimentar sua população, porém, falham em fazer os produtos chegarem à mesa de seu povo. Uma logística eficiente não apenas reduz o desperdício de alimentos, mas também melhora a rentabilidade dos produtores agropecuários.
+Esse problema de distribuição eficiente pode ser modelado como o Problema do Caixeiro Viajante (TSP - Travelling Salesman Problem). O TSP é um problema que existe há mais de 200 anos, existem diversas variações na sua formulação, porém, em resumo, trata-se de um caixeiro viajante que deve passar por várias cidades, buscando encontrar a rota mais curta possível. Esse é um problema complexo pois as combinações de rotas crescem de forma fatorial com o incremento de cada cidade, tornando muito custoso analisar todas as combinações para obter a solução perfeita. 
+Diante dessa complexidade, torna-se comum a utilização de metaheurísticas, que são métodos capazes de encontrar soluções aproximadas e satisfatórias para problemas complexos de otimização. Entre essas abordagens, os Algoritmos Genéticos (AGs) se destacam por sua eficiência e flexibilidade. Inspirados na teoria da evolução, esses algoritmos utilizam mecanismos de seleção, recombinação e mutação para gerar e aprimorar sucessivamente um conjunto de soluções.
+Dessa forma, este trabalho tem como objetivo desenvolver e implementar uma solução web para otimização de rotas no agronegócio, considerando as particularidades do setor, como a perecibilidade dos produtos e a necessidade de distribuição eficiente. A proposta visa reduzir desperdícios, minimizar custos logísticos e melhorar a eficácia no transporte de mercadorias agropecuárias por meio da aplicação de Algoritmos Genéticos.
+
+Material e Métodos
+
+A implementação será dividida em duas partes, a parte do front-end web, e a parte do back-end da API. Para o front-end será utilizado o framework Angular com Javascript e para a parte do back-end será utilizado o framework Quarkus 3.9.5 com Java 21. 
+Será necessário obter informações sobre distâncias entre cidades, para isso, inicialmente pretende-se utilizar a Distance Matrix API, fornecida pelo Google. Ela permite calcular a distância e tempo de viagem da rota mais curta entre duas cidades, essa informação será crucial para otimização da rota geral e para evitar a perecibilidade dos produtos agropecuários.
+Para a aplicação dos Algoritmos Genéticos (AGs), será utilizada a biblioteca Jenetics, versão 7.2.0, que oferece uma implementação robusta e flexível de operadores como seleção, cruzamento e mutação. Sua compatibilidade com Java 21 e a boa documentação disponível proporcionam maior praticidade e economia de tempo no desenvolvimento. Além disso, a biblioteca permite foco na modelagem do problema, facilitando ajustes de parâmetros e integração com o restante da aplicação web proposta.
+Na parte de back-end, serão utilizadas diversas ferramentas para garantir a qualidade, testabilidade e manutenção do código. O JUnit 5 será empregado na implementação de testes automatizados unitários, assegurando o correto funcionamento dos métodos desenvolvidos. Para testes de integração e validação do funcionamento completo da API, será utilizado o Swagger UI, permitindo simulações e inspeções diretas das requisições. O GitHub será adotado como plataforma de controle de versionamento, possibilitando o registro e acompanhamento das alterações realizadas no projeto. Por fim, será utilizado o SonarQube para a análise de code smells, verificação de boas práticas e cobertura de código, contribuindo para a manutenção da qualidade técnica da aplicação.
+Serão analisados, no mínimo, cinco cenários distintos de roteirização, variando o número de pontos entre 5 e 20 localidades. Todos os casos utilizados serão fictícios, com o objetivo de simular diferentes situações logísticas no contexto do agronegócio. Cada cenário será executado 10 vezes, a fim de avaliar a consistência dos resultados e o comportamento do algoritmo genético frente à variação dos dados de entrada. Os produtos agropecuários considerados nos testes serão frutas e hortaliças altamente perecíveis, como o morango e a alface, que possuem vida útil bastante curta após a colheita. Essa escolha reforça a importância de rotas eficientes, que reduzam o tempo de entrega e as perdas durante a distribuição.
+
+Resultados e Discussão
+
+4.1 Arquitetura e Implementação do Sistema
+
+O sistema desenvolvido consiste em uma API RESTful implementada com o framework Quarkus 3.4.1, utilizando Java 21. A arquitetura segue padrões de design modularizados, separando claramente as responsabilidades entre camadas de apresentação (REST), controle de negócio e algoritmos de otimização.
+
+A API oferece três endpoints principais: (1) `/optimize` para otimização completa de rotas, (2) `/check-feasibility` para verificação de viabilidade sem otimização, e (3) `/info` para informações do serviço. Esta estrutura permite tanto operações de análise quanto de otimização, oferecendo flexibilidade para diferentes necessidades dos usuários.
+
+4.2 Integração com Serviços Externos
+
+O sistema integra-se com dois serviços da Google Maps Platform: a Distance Matrix API para cálculo de distâncias e tempos de viagem reais, e a Geocoding API para conversão de endereços em coordenadas geográficas. Durante os testes, foram observadas latências de até 445 ms para a Distance Matrix API e 399 ms para a Geocoding API, valores considerados aceitáveis para aplicações web em tempo real.
+
+A integração utiliza a biblioteca oficial `google-maps-services` versão 2.2.0, que oferece robustez e tratamento adequado de erros. O sistema implementa tratamento de falhas para cenários onde as APIs externas não estão disponíveis, garantindo graceful degradation da aplicação.
+
+4.3 Algoritmo Genético Implementado
+
+O algoritmo genético foi implementado utilizando a biblioteca Jenetics 7.2.0, configurado com os seguintes parâmetros otimizados:
+- População: 100 indivíduos
+- Gerações máximas: 500
+- Probabilidade de mutação: 15%
+- Probabilidade de crossover: 65%
+
+A função de fitness considera múltiplos fatores: (1) tempo total de percurso da rota, (2) penalizações exponenciais para violações de restrições temporais dos produtos perecíveis, e (3) custos associados ao carregamento/descarregamento. Esta abordagem multi-objetivo permite balancear eficiência de rota com preservação da qualidade dos produtos.
+
+A representação cromossômica utiliza permutações dos índices de entrega, garantindo que cada local seja visitado exatamente uma vez. O operador de crossover empregado é o Partially Mapped Crossover (PMX), adequado para problemas de permutação, enquanto a mutação utiliza swap de genes adjacentes.
+
+4.4 Validação de Perecibilidade
+
+Um diferencial significativo do sistema é a implementação de validação de perecibilidade específica para produtos agropecuários. O algoritmo considera três categorias principais: laticínios (720 minutos), vegetais (1440 minutos) e frutas (variável conforme o tipo). O sistema calcula em tempo real se produtos deteriorarão durante o transporte, rejeitando rotas inviáveis.
+
+A penalização por violação de restrições temporais segue uma função quadrática: penalty = (tempo_excedido)² × 1000, criando forte pressão seletiva contra soluções que comprometam a qualidade dos produtos. Esta abordagem mostrou-se eficaz em manter as soluções dentro dos limites operacionais estabelecidos.
+
+4.5 Testes e Validação
+
+O sistema foi validado através de testes unitários automatizados utilizando JUnit 5, com cobertura de cenários incluindo: otimização com duas entregas, entrega única, e casos de inviabilidade. Os testes demonstraram que o sistema é capaz de:
+- Detectar cenários inviáveis (tempo de entrega superior ao limite de deterioração)
+- Otimizar rotas considerando múltiplas restrições simultaneamente
+- Manter consistência de resultados entre execuções
+
+A documentação automática da API foi gerada utilizando OpenAPI 3.0 (Swagger), facilitando integração e testes manuais através de interface web interativa.
+
+4.6 Performance e Escalabilidade
+
+Os testes de performance indicaram tempos de execução do algoritmo genético variando entre 100ms e 4.3 segundos, dependendo da complexidade do problema (número de entregas). Para cenários com até 5 entregas, o tempo médio foi inferior a 500ms, considerado adequado para aplicações interativas.
+
+A aplicação Quarkus demonstrou inicialização rápida (3.6 segundos) e baixo consumo de memória, características importantes para implantação em ambientes containerizados. O framework mostrou-se adequado para aplicações de otimização em tempo real.
+
+4.7 Limitações e Trabalhos Futuros
+
+Algumas limitações foram identificadas durante o desenvolvimento: (1) dependência de conectividade com APIs externas da Google, (2) escalabilidade limitada para problemas com mais de 20 entregas, e (3) consideração simplificada de fatores climáticos na deterioração.
+
+Trabalhos futuros incluem implementação de algoritmos de fallback para cenários offline, otimização de parâmetros do algoritmo genético através de técnicas meta-heurísticas, e incorporação de modelos preditivos mais sofisticados para deterioração de produtos específicos.
+
+
+
+
+Considerações Finais
+
+A fase atual do projeto resultou em avanços importantes, com a implementação de uma API em Quarkus capaz de integrar-se às APIs da Google para obtenção de distâncias e coordenadas geográficas. Esses recursos formam a base necessária para a aplicação de algoritmos de otimização de rotas.
+Uma versão inicial do algoritmo genético foi implementada com a biblioteca Jenetics 7.2.0, considerando apenas a minimização das distâncias. No entanto, ainda não foram incorporadas as restrições específicas do problema, como a perecibilidade dos alimentos. Os testes realizados foram locais e focados na verificação estrutural da API.
+Apesar das limitações, os resultados preliminares indicam viabilidade técnica para as próximas etapas, que deverão incluir a adaptação do algoritmo ao contexto logístico do agronegócio e a realização de testes mais abrangentes.
+
+
+Referências
+
+CONFEDERAÇÃO DA AGRICULTURA E PECUÁRIA DO BRASIL (CNA). Panorama do Agro. Disponível em: https://www.cnabrasil.org.br/cna/panorama-do-agro. Acesso em: 29 mar. 2025.
+
+CAIXETA FILHO, José Vicente; PÉRA, Thiago Guilherme. O custo do desperdício na logística do agronegócio no Brasil. Perdas em transporte e armazenagem de grãos: panorama atual e perspectivas, 2021.
+

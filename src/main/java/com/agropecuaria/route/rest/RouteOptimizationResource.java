@@ -60,6 +60,28 @@ public class RouteOptimizationResource {
             RouteOptimizationResponse response = routeOptimizer.optimizeRoute(request);
             
             if (response.getFeasible()) {
+                // Verificação adicional: verifica se produtos estragaram após otimização
+                try {
+                    var spoilageResult = routeOptimizer.validateOptimizedRoute(
+                        response.getOptimizedRoute(), request
+                    );
+                    
+                    if (!spoilageResult.isAllProductsValid()) {
+                        // Alguns produtos estragaram - retorna warning mas mantém a solução
+                        String warningMessage = "ATENÇÃO: Alguns produtos podem estragar durante a entrega: " + 
+                                String.join(", ", spoilageResult.getSpoiledProducts());
+                        
+                        response.setMessage(response.getMessage() + ". " + warningMessage);
+                        
+                        LOG.warn("Produtos que podem estragar: " + spoilageResult.getSpoiledProducts());
+                        LOG.warn("Entregas afetadas: " + spoilageResult.getSpoiledDeliveries());
+                    }
+                    
+                } catch (Exception e) {
+                    LOG.warn("Erro durante verificação de produtos estragados: " + e.getMessage());
+                    // Continua sem a verificação adicional
+                }
+                
                 LOG.info("Rota otimizada com sucesso. Tempo total: " + 
                         response.getTotalTimeMinutes() + " minutos, Distância: " + 
                         String.format("%.2f", response.getTotalDistanceKm()) + " km");

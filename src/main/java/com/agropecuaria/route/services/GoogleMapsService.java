@@ -12,6 +12,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * Serviço para integração com Google Maps Distance Matrix API
@@ -131,7 +132,7 @@ public class GoogleMapsService {
                 }
             }
         }
-        
+        LOG.info("Time matrix: " + Arrays.deepToString(timeMatrix));
         return timeMatrix;
     }
     

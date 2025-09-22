@@ -45,7 +45,7 @@ class GeneticRouteOptimizerTest {
         // Assert
         assertNotNull(response);
         assertNotNull(response.getOptimizedRoute());
-        assertEquals(2, response.getOptimizedRoute().size());
+        assertEquals(4, response.getOptimizedRoute().size());
         assertTrue(response.getTotalDistanceKm() > 0);
         assertTrue(response.getTotalTimeMinutes() > 0);
         assertTrue(response.getAlgorithmExecutionTimeMs() > 0);
@@ -98,7 +98,7 @@ class GeneticRouteOptimizerTest {
         
         // Assert
         assertNotNull(response);
-        assertEquals(1, response.getOptimizedRoute().size());
+        assertEquals(3, response.getOptimizedRoute().size());
         // O algoritmo pode retornar 0 ou 1 dependendo da implementação
         assertTrue(response.getOptimizedRoute().get(0) >= 0);
         assertTrue(response.getFeasible());

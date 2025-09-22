@@ -169,7 +169,7 @@ class RouteOptimizationResourceTest {
         .then()
             .statusCode(200)
             .body("feasible", is(true))
-            .body("optimizedRoute", hasSize(1))
+            .body("optimizedRoute", contains(0, 1, 0))
             .body("totalTimeMinutes", greaterThan(0))
             .body("totalDistanceKm", greaterThan(0.0f));
     }

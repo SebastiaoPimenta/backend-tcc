@@ -1,0 +1,1 @@
+web: java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=$PORT -jar target/route-optimization-1.0.0-SNAPSHOT-runner.jar

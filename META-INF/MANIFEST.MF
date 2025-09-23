@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Class-Path: 
+Main-Class: io.quarkus.runner.GeneratedMain
+Implementation-Title: Route Optimization Service
+Implementation-Version: 1.0.0
+Multi-Release: true
+

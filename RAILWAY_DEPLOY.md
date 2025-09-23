@@ -14,8 +14,7 @@ web: java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=$PORT -jar target/rout
 Configure as seguintes variáveis de ambiente no Railway:
 
 - `GOOGLE_MAPS_API_KEY`: Sua chave da API do Google Maps
-- `PORT`: Porta configurada automaticamente pelo Railway
-- `QUARKUS_HTTP_PORT`: Usa a variável $PORT do Railway
+- `PORT`: Porta configurada automaticamente pelo Railway (não precisa configurar manualmente)
 
 ### 3. Build
 O projeto está configurado para gerar um uber-jar, que contém todas as dependências necessárias em um único arquivo JAR executável.
@@ -35,8 +34,9 @@ java -Dquarkus.http.host=0.0.0.0 -Dquarkus.http.port=8080 -jar target/route-opti
 ## Estrutura de Arquivos para Deploy
 
 - `Procfile`: Comando de inicialização
-- `railway.toml`: Configurações específicas do Railway
+- `nixpacks.toml`: Configurações de build do Railway
 - `build.sh`: Script de build (opcional)
+- `.nvmrc`: Versão do Node.js
 - `target/route-optimization-1.0.0-SNAPSHOT-runner.jar`: JAR executável gerado
 
 ## Verificação
@@ -58,8 +58,18 @@ railway logs
 ### Erro "no main manifest attribute"
 ✅ **Resolvido**: O projeto agora gera um uber-jar com Main-Class definido
 
+### Erro "Failed to parse your service config. Error: build.builder: Invalid input"
+✅ **Resolvido**: Removido railway.toml problemático, usando nixpacks.toml
+
 ### Port binding
 ✅ **Configurado**: A aplicação usa a variável $PORT do Railway
 
 ### Environment variables
 ✅ **Configurado**: Variáveis de ambiente são lidas automaticamente
+
+## Histórico de Correções
+
+1. **v1**: Configurado uber-jar no Quarkus
+2. **v2**: Removido railway.toml problemático  
+3. **v3**: Adicionado nixpacks.toml para Railway
+4. **v4**: Configurado .nvmrc e .dockerignore
